@@ -20,6 +20,7 @@ def CreateExperience(request):      #function for create experience
             return redirect('experience:create_round', pk=experience.id, n=experience.recruitement_process)
         else:
             print(form.errors)
+            return render(request, 'experience/experience_create.html', {'form':form})
     else:
         form=ExperienceForm()
         return render(request, 'experience/experience_create.html', {'form':form})
@@ -42,6 +43,7 @@ def CreateRound(request, pk, n):
                 return redirect('experience:create_round', pk=pk, n=n-1)
         else:
             print(form.errors)
+            return render(request, 'experience/round_create.html', {'form':form})
     else:
         form=RoundForm()
         return render(request, 'experience/round_create.html', {'form':form})

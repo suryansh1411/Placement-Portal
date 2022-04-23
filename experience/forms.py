@@ -16,18 +16,31 @@ RTYPE=[
     ('Managerial Round', 'Managerial Round'),
 ]
 
+def numOfRoundsCheck(value):
+    if(value<=0):
+        raise forms.ValidationError("Number of Rounds must be greater than 0.")
+
+
 class ExperienceForm(forms.ModelForm):
     company=forms.CharField()
     experience_type=forms.ChoiceField(required=True, choices=EXTYPE)
-    recruitement_process=forms.IntegerField(label="Number of Rounds")
+    recruitement_process=forms.IntegerField(label="Number of Rounds", validators=[numOfRoundsCheck])
 
     class Meta():
         model=Experience
         fields=['company', 'experience_type', 'recruitement_process']
        
 
+# def formatOfResume(value):
+#     import os
+#     ext = os.path.splitext(value.name)[1]
+#     valid_extensions = ['.pdf']
+#     if not ext.lower() in valid_extensions:
+#         raise forms.ValidationError("Resume must be a pdf file.")
+
+
 class EffortForm(forms.ModelForm):
-    resume=forms.FileField(required=False)
+    resume=forms.FileField(required=False, widget=forms.FileInput(attrs={'accept':'application/pdf'}))
     resources=forms.CharField(widget=forms.Textarea, required=False)
     efforts=forms.CharField(widget=forms.TextInput(attrs={'placeholder':'hh hrs / day'}), required=False)
     tips=forms.CharField(widget=forms.Textarea, required=False)
