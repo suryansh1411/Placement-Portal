@@ -18,6 +18,8 @@ def CreateExperience(request):      #function for create experience
             experience.user=request.user
             experience.save()     # messages.success(request,  "Booking created successfully ")     # url='effort/'+str(experience.id)
             return redirect('experience:create_round', pk=experience.id, n=experience.recruitement_process)
+        else:
+            print(form.errors)
     else:
         form=ExperienceForm()
         return render(request, 'experience/experience_create.html', {'form':form})
@@ -38,6 +40,8 @@ def CreateRound(request, pk, n):
                 return redirect('experience:create_effort', pk=pk)
             else :
                 return redirect('experience:create_round', pk=pk, n=n-1)
+        else:
+            print(form.errors)
     else:
         form=RoundForm()
         return render(request, 'experience/round_create.html', {'form':form})
@@ -55,6 +59,8 @@ def CreateEffort(request, pk):
             effort.save()
             # messages.success(request,  "Booking created successfully ")
             return redirect('home')
+        else:
+            print(form.errors)
     else:
         form=EffortForm()
         return render(request, 'experience/effort_create.html', {'form':form})
@@ -75,6 +81,8 @@ def BookmarkExperience(request, pk):
             bookmark.save()
             # messages.success(request,  "Booking created successfully ")
             return redirect('home')
+        else:
+            print(form.errors)
     else:
         form=BookmarkForm()
         return render(request, 'experience/effort_create.html', {'form':form})
