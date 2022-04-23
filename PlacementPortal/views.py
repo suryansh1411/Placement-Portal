@@ -17,8 +17,6 @@ def Home(request):
 
     context['experiences']=zip(experiences, flag)
     context['form']=BookmarkForm()
-    for i in flag:
-        print(i)
     return render(request, 'experience/home.html', context)
 
 

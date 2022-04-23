@@ -77,13 +77,5 @@ def BookmarkExperience(request, pk):
             return redirect('home')
     else:
         form=BookmarkForm()
-        flag=0
-        exp=get_object_or_404(Experience, pk)
-        aux=Bookmark.objects.all().filter(experience=exp).filter(user=request.user)
-        if len(aux)==1:
-            flag=1
-        else :
-            flag=0
-        # print(flag+5)
-        return render(request, 'experience/effort_create.html', {'form':form, 'flag':flag})
+        return render(request, 'experience/effort_create.html', {'form':form})
 

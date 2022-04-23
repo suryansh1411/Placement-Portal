@@ -9,7 +9,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
@@ -99,13 +100,19 @@
                         <form action={% url 'experience:bookmark_experience' experience.pk %} method="post">
                           {% csrf_token %}
                           {{form}}
-                          <button type="submit" class="btn btn-primary btn-lg">Bookmark</button>
+                          <!-- <button type="submit" class="btn btn-primary btn-lg">Bookmark</button> -->
+                          <div style="position: absolute; right: 2px;">
+                            <button class="btn" type="submit"><i class="fa fa-bookmark" aria-hidden="true" style="font-size:36px;color:yellow"></i></button>
+                          </div>
+                          
                         </form>
                       {% else %}
                         <form action={% url 'experience:bookmark_experience' experience.pk %} method="post">
                           {% csrf_token %}
                           {{form}}
-                          <button type="submit" class="btn btn-secondary btn-lg">Bookmark</button>
+                          <div style="position: absolute; right: 2px;">
+                            <button class="btn" type="submit"><i class="fa fa-bookmark" aria-hidden="true" style="font-size:36px;color:white"></i></button>
+                          </div>
                         </form>
                       {% endif %}
 
@@ -116,7 +123,7 @@
               </div>
             </div>
           {% endfor %}
-            
+          
           </div>
         </div>
     
