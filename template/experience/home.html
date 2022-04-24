@@ -99,16 +99,19 @@
           {% for experience, f in experiences %}
             <div class="col-md-4">
     
-              <div class="card text-white border-secondary mx-auto mb-5 w-100" style='background-color:rgb(23, 38, 87); '>
+              <div class="card text-white border-secondary mx-auto mb-5 w-100" style='background-color:rgb(0, 102, 153); '>
            
                   <div class="card-body" style='border: 1px solid rgb(23, 38, 87) '>
                     <div class="card-title text-center">
     
                     </div>
                     <div class="card-text">
-                      <h5>{{experience.user.username}}</h5>
-                      <h8> {{experience.experience_type}}</h8>
-                      <h6> {{experience.company}}</h6>
+                      <h5 style="text-align:center">{{experience.user.username}}</h5>
+                      <div >
+                        <h8 style="text-align:left"> {{experience.experience_type}} 
+                          <span><h6> {{experience.company}}</h6></span></h8>
+                      </div>
+                      
                       <h6>Number of rounds : {{experience.recruitement_process}}</h6>
                       
                       {% if f == 1 %}

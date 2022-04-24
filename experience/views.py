@@ -96,15 +96,14 @@ def BookmarkExperience(request, pk):
 #################################################################################################
 
 @login_required
+# Function invoked to Search Experience based on Name or Company
 def SearchExperience(request):
-    if request.method=='POST':
+    if request.method=='POST':      # When the Search for
         form=SearchForm(request.POST.dict())
         if form.is_valid():
             data=form.cleaned_data
             pattern=data['pattern']
-
             context={}
-    
             context['experiences']=getExperiences(request, pattern)
             context['form']=BookmarkForm()
             context['searchform']=SearchForm()
