@@ -26,9 +26,10 @@
       </ul>
 
       <div class="col-sm-3 col-md-4">
-        <form class="navbar-form" role="search">
+        <form action={% url 'experience:search_experience' %} method="post" class="navbar-form">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+            <!-- <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"> -->
+            {{searchform.pattern}}
             <div class="input-group-btn">
               <button class="btn" type="submit"><i class="fa fa-search" aria-hidden="true" style="font-size:24px;color:white"></i></button>
             </div>
@@ -67,7 +68,7 @@
     </nav>
   
 
-    <br><br><br>
+    <br><br><br><br>
     {% if messages %}
     {% for message in messages %}
     <div class="container">
@@ -85,7 +86,7 @@
     {% endblock %}
     
     
-
+<br>
     <div class="col-md-12">
 
       <div class="container">

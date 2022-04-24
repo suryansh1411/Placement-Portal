@@ -10,17 +10,18 @@ import experience
 
 
 @login_required
-def CreateExperience(request):      #function for create experience
-    if request.method=='POST':       # request method to get form input
+# Main function invoked to handle Experience Creation for the website
+def CreateExperience(request):      
+    if request.method=='POST':      # When the Experience Creation form is filled
         form=ExperienceForm(request.POST)
-        if form.is_valid():                    #if inputs are valid
+        if form.is_valid():                    # If the form is filled as expected
             experience=form.save(commit=False)
             experience.user=request.user
-            experience.save()     # messages.success(request,  "Booking created successfully ")     # url='effort/'+str(experience.id)
-            return redirect('experience:create_round', pk=experience.id, n=experience.recruitement_process)
-        else:
-            print(form.errors)
-            return render(request, 'experience/experience_create.html', {'form':form})
+            experience.save()       # Save the Experience to the database
+            return redirect('experience:create_round', pk=experience.id, n=experience.recruitement_process) 
+        else:       # If the form is not filled as expected
+            print(form.errors)      
+            return render(request, 'experience/experience_create.html', {'form':form})      
     else:
         form=ExperienceForm()
         return render(request, 'experience/experience_create.html', {'form':form})
@@ -96,10 +97,26 @@ def BookmarkExperience(request, pk):
 @login_required
 def SearchExperience(request):
     if request.method=='POST':
-        form=SearchForm(request.POST)
+        form=SearchForm(request.POST.dict())
         if form.is_valid():
-            pattern=form.pattern
+            data=form.cleaned_data
+            pattern=data['pattern']
 
+            context={}
+            experiences=Experience.objects.all()
+    
+            flag=[]
+            for exp in experiences:
+                aux=Bookmark.objects.all().filter(experience=exp).filter(user=request.user)
+                if len(aux) == 0:
+                    flag.append(0)
+                else :
+                    flag.append(1)
+
+            context['experiences']=zip(experiences, flag)
+            context['form']=BookmarkForm()
+            context['searchform']=SearchForm()
+            return render(request, 'experience/home.html', context)
         else:
             print(form.errors)
             return redirect('home')

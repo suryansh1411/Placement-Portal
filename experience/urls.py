@@ -11,4 +11,5 @@ urlpatterns=[
     path('round/<pk>/<int:n>/', views.CreateRound, name='create_round'),
     path('effort/<pk>', views.CreateEffort, name='create_effort'),
     path('bookmark/<pk>', views.BookmarkExperience, name='bookmark_experience'),
+    path('search/', views.SearchExperience, name='search_experience'),
 ]

@@ -68,6 +68,6 @@ class BookmarkForm(forms.ModelForm):
         # fields=['experience', 'user']
 
 class SearchForm(forms.Form):
-    pattern=forms.CharField(max_length=25, required=False)
+    pattern=forms.CharField(max_length=25, required=False, label="", widget=forms.TextInput(attrs={'placeholder':'Search'}))
 
 
