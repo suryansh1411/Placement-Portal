@@ -42,7 +42,7 @@ class ExperienceForm(forms.ModelForm):
 class EffortForm(forms.ModelForm):
     resume=forms.FileField(required=False, widget=forms.FileInput(attrs={'accept':'application/pdf'}))
     resources=forms.CharField(widget=forms.Textarea, required=False)
-    efforts=forms.CharField(widget=forms.TextInput(attrs={'placeholder':'hh hrs / day'}), required=False)
+    efforts=forms.CharField(widget=forms.TextInput(attrs={'placeholder':'hh hrs / day'}), required=False, label="Efforts put in : ")
     tips=forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta():
@@ -67,5 +67,7 @@ class BookmarkForm(forms.ModelForm):
         fields=[]
         # fields=['experience', 'user']
 
+class SearchForm(forms.Form):
+    pattern=forms.CharField(max_length=25, required=False)
 
 

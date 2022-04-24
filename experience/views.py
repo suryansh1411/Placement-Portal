@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
-from experience.forms import ExperienceForm, EffortForm, RoundForm, BookmarkForm
+from experience.forms import ExperienceForm, EffortForm, RoundForm, BookmarkForm, SearchForm
 from django.contrib import messages
 from . import urls
 from .models import Experience, Bookmark
@@ -46,7 +46,9 @@ def CreateRound(request, pk, n):
             return render(request, 'experience/round_create.html', {'form':form})
     else:
         form=RoundForm()
-        return render(request, 'experience/round_create.html', {'form':form})
+        exp=get_object_or_404(Experience, pk=pk)
+        numberOfRounds=exp.recruitement_process-n+1
+        return render(request, 'experience/round_create.html', {'form':form, 'numberOfRounds':numberOfRounds})
 
 
 @login_required
@@ -68,7 +70,7 @@ def CreateEffort(request, pk):
         return render(request, 'experience/effort_create.html', {'form':form})
 
 
-###############################################################################################3
+###############################################################################################
 
 @login_required
 def BookmarkExperience(request, pk):
@@ -89,3 +91,18 @@ def BookmarkExperience(request, pk):
         form=BookmarkForm()
         return render(request, 'experience/effort_create.html', {'form':form})
 
+#################################################################################################
+
+@login_required
+def SearchExperience(request):
+    if request.method=='POST':
+        form=SearchForm(request.POST)
+        if form.is_valid():
+            pattern=form.pattern
+
+        else:
+            print(form.errors)
+            return redirect('home')
+    else:
+        form=SearchForm
+        return redirect('home')

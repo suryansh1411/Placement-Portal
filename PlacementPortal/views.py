@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect
 from django.views.generic import ListView, TemplateView
 from experience.models import Experience, Bookmark
-from experience.forms import BookmarkForm
+from experience.forms import BookmarkForm, SearchForm
 
 def Home(request):
     context={}
@@ -17,6 +17,7 @@ def Home(request):
 
     context['experiences']=zip(experiences, flag)
     context['form']=BookmarkForm()
+    context['searchform']=SearchForm()
     return render(request, 'experience/home.html', context)
 
 
