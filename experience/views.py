@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy, reverse
@@ -6,6 +7,7 @@ from django.contrib import messages
 from . import urls
 from .models import Experience, Bookmark
 import experience
+from django.contrib.auth.models import User
 # Create your views here.
 
 
@@ -28,6 +30,7 @@ def CreateExperience(request):
 
 
 @login_required
+# Function invoked to create
 def CreateRound(request, pk, n):
     if request.method=='POST':
         form=RoundForm(request.POST)
@@ -53,20 +56,19 @@ def CreateRound(request, pk, n):
 
 
 @login_required
+# Function invoked to add Resume and Effort Time to the website
 def CreateEffort(request, pk):
-    if request.method=='POST':
+    if request.method=='POST':         # If the form is filled as expected
         form=EffortForm(request.POST)
-        if form.is_valid():
+        if form.is_valid():     # If the form is filled as expected
             effort=form.save(commit=False)
-
             exp=get_object_or_404(Experience, pk=pk)
             effort.experience=exp
-            effort.save()
-            # messages.success(request,  "Booking created successfully ")
+            effort.save()       # Save the data to the database
             return redirect('home')
-        else:
-            print(form.errors)
-    else:
+        else:   # If the form is not filled as expected
+            print(form.errors)      
+    else:   # When the function is called by CreateRound
         form=EffortForm()
         return render(request, 'experience/effort_create.html', {'form':form})
 
@@ -74,21 +76,20 @@ def CreateEffort(request, pk):
 ###############################################################################################
 
 @login_required
+# Function invoked to Bookmark an Experience
 def BookmarkExperience(request, pk):
-    if request.method=='POST':
+    if request.method=='POST':  # When the Bookmark button is clicked
         form=BookmarkForm(request.POST)
-        if form.is_valid():
-            bookmark=form.save(commit=False)
-
+        if form.is_valid():     # When the button is clicked
+            bookmark=form.save(commit=False)    
             exp=get_object_or_404(Experience, pk=pk)
             bookmark.experience=exp
             bookmark.user=request.user
-            bookmark.save()
-            # messages.success(request,  "Booking created successfully ")
+            bookmark.save()     # Save the Bookmarked Profile to the database
             return redirect('home')
-        else:
+        else:   # Invalid request
             print(form.errors)
-    else:
+    else:   # When the Bookmarks page is called
         form=BookmarkForm()
         return render(request, 'experience/effort_create.html', {'form':form})
 
@@ -103,19 +104,11 @@ def SearchExperience(request):
             pattern=data['pattern']
 
             context={}
-            experiences=Experience.objects.all()
     
-            flag=[]
-            for exp in experiences:
-                aux=Bookmark.objects.all().filter(experience=exp).filter(user=request.user)
-                if len(aux) == 0:
-                    flag.append(0)
-                else :
-                    flag.append(1)
-
-            context['experiences']=zip(experiences, flag)
+            context['experiences']=getExperiences(request, pattern)
             context['form']=BookmarkForm()
             context['searchform']=SearchForm()
+            context['searchvalue']=pattern
             return render(request, 'experience/home.html', context)
         else:
             print(form.errors)
@@ -123,3 +116,26 @@ def SearchExperience(request):
     else:
         form=SearchForm
         return redirect('home')
+
+
+def getExperiences(request,pattern):
+    companywise_experiences=Experience.objects.all().filter(company__icontains=pattern)
+    namewise_experiences=[]
+
+    users_list=User.objects.all().filter(username__icontains=pattern)
+
+    for user in users_list:
+        for exp in user.experiences.all():
+            namewise_experiences.append(exp)
+        print(user.username)
+
+    experiences=list(set(companywise_experiences) | set(namewise_experiences))
+
+    flag=[]
+    for exp in experiences:
+        aux=Bookmark.objects.all().filter(experience=exp).filter(user=request.user)
+        if len(aux) == 0:
+            flag.append(0)
+        else :
+            flag.append(1)
+    return zip(experiences, flag)

@@ -29,7 +29,10 @@
         <form action={% url 'experience:search_experience' %} method="post" class="navbar-form">
         <div class="input-group">
             <!-- <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"> -->
-            {{searchform.pattern}}
+            <div value={{searchvalue}}>
+              {{searchform.pattern}}
+            </div>
+            
             <div class="input-group-btn">
               <button class="btn" type="submit"><i class="fa fa-search" aria-hidden="true" style="font-size:24px;color:white"></i></button>
             </div>

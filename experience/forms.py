@@ -1,4 +1,6 @@
 from dataclasses import field
+from tkinter import Widget
+from turtle import textinput
 from django import forms
 from .models import EXTYPE, RTYPE, Experience, Effort, Round, Bookmark
 
@@ -69,5 +71,10 @@ class BookmarkForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     pattern=forms.CharField(max_length=25, required=False, label="", widget=forms.TextInput(attrs={'placeholder':'Search'}))
+
+    class Meta():
+        widgets = {
+            'pattern' : forms.Textarea(attrs={'width':20})
+        }
 
 
